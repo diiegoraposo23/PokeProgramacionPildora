@@ -1,0 +1,3 @@
+public enum EstadoAlterado {
+    NINGUNO, QUEMADO, ENVENENADO, PARALIZADO, DORMIDO, CONGELADO
+}
