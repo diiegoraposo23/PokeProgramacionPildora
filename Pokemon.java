@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Pokemon implements Comparable<Pokemon> {
     protected int nPokedex;
     protected TipoPokemon tipo;
@@ -58,7 +60,79 @@ public class Pokemon implements Comparable<Pokemon> {
     }
 
     public String aplicarEfectosDeEstado() {
-        if ()
+        if (estado == EstadoAlterado.QUEMADO || estado == EstadoAlterado.ENVENENADO) {
+            int danyoEstado = Math.max(1, vidaMaxima / 8);
+            this.vidaActual -= danyoEstado;
+            if(this.vidaActual < 0) this.vidaActual = 0;
+            return nombre + " sufre daño por estar " + estado + " (-" + danyoEstado + " PS).\n"; 
+        }
+        return "";
+    }
+
+    public abstract String atacar(Pokemon rival, Ataque ataqueUsado);
+
+    public void recibirDanyo(int cantidad) {
+        int danyoReal = cantidad - this.statDefensa;
+        if (danyoReal <= 0) danyoReal = 1;
+        this.vidaActual -= danyoReal;
+        if (this.vidaActual < 0) this.vidaActual = 0;
+    }
+
+    public boolean estaVivo() {
+        return this.vidaActual > 0;
+    }
+
+    // Sobreescritura de los métodos.
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pokemon pokemon = (Pokemon) obj;
+        return nPokedex == pokemon.nPokedex;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nPokedex);
+    }
+
+    @Override
+    public int compareTo(Pokemon otro) {
+        return Integer.compare(this.nPokedex, otro.nPokedex);
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (Lv." + nivel + ") [" + tipo + "] " + getBarraVidaVisual():
+    }
+
+    // Getters y Setters.
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getVidaMaxima() {
+        return vidaMaxima;
+    }
+
+    public int getVidaActual() {
+        return vidaActual;
+    }
+
+    public Ataque[] getAtaques() {
+        return ataques;
+    }
+
+    public String getRutaSprite() {
+        return rutaSprite;
+    }
+
+    public EstadoAlterado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoAlterado estado) {
+        this.estado = estado;
     }
 
     
