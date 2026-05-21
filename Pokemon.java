@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Pokemon implements Comparable<Pokemon> {
+public abstract class Pokemon implements Comparable<Pokemon> {
     protected int nPokedex;
     protected TipoPokemon tipo;
     protected String nombre;
@@ -54,7 +54,7 @@ public class Pokemon implements Comparable<Pokemon> {
             this.vidaActual = vidaMaxima;
             this.statAtaque += 2;
             this.statDefensa += 2;
-            sb.append("i").append(nombre).append(" subió al Nivel ").append(nivel).append("!\n");
+            sb.append("¡").append(nombre).append(" subió al Nivel ").append(nivel).append("!\n");
         }
         return sb.toString();
     }
@@ -103,7 +103,7 @@ public class Pokemon implements Comparable<Pokemon> {
 
     @Override
     public String toString() {
-        return nombre + " (Lv." + nivel + ") [" + tipo + "] " + getBarraVidaVisual():
+        return nombre + " (Lv." + nivel + ") [" + tipo + "] " + getBarraVidaVisual();
     }
 
     // Getters y Setters.
