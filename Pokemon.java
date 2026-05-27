@@ -1,17 +1,19 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Pokemon implements Comparable<Pokemon> {
+// Añadido Serializable
+public abstract class Pokemon implements Comparable<Pokemon>, Serializable { 
     protected int nPokedex;
     protected TipoPokemon tipo;
     protected String nombre;
     protected int nivel;
     protected int experiencia;
-
+    
     protected int vidaMaxima;
     protected int vidaActual;
     protected int statAtaque;
     protected int statDefensa;
-
+    
     protected Ataque[] ataques;
     protected EstadoAlterado estado;
     protected String rutaSprite;
@@ -36,11 +38,10 @@ public abstract class Pokemon implements Comparable<Pokemon> {
         int bloquesLlenos = (int) Math.round(((double) vidaActual / vidaMaxima) * longitudBarra);
         StringBuilder barra = new StringBuilder("[");
         for (int i = 0; i < longitudBarra; i++) {
-            barra.append(i < bloquesLlenos ? "||" : " ");
+            barra.append(i < bloquesLlenos ? "█" : "░");
         }
-
-        barra.append("]").append(vidaActual).append("/").append(vidaMaxima).append("PS");
-        if (estado != EstadoAlterado.NINGUNO) barra.append("[").append(estado).append("]");
+        barra.append("] ").append(vidaActual).append("/").append(vidaMaxima).append(" PS");
+        if (estado != EstadoAlterado.NINGUNO) barra.append(" [").append(estado).append("]");
         return barra.toString();
     }
 
@@ -51,7 +52,7 @@ public abstract class Pokemon implements Comparable<Pokemon> {
             this.experiencia -= 100;
             this.nivel++;
             this.vidaMaxima += 5;
-            this.vidaActual = vidaMaxima;
+            this.vidaActual = vidaMaxima; 
             this.statAtaque += 2;
             this.statDefensa += 2;
             sb.append("¡").append(nombre).append(" subió al Nivel ").append(nivel).append("!\n");
@@ -64,7 +65,7 @@ public abstract class Pokemon implements Comparable<Pokemon> {
             int danyoEstado = Math.max(1, vidaMaxima / 8);
             this.vidaActual -= danyoEstado;
             if(this.vidaActual < 0) this.vidaActual = 0;
-            return nombre + " sufre daño por estar " + estado + " (-" + danyoEstado + " PS).\n"; 
+            return nombre + " sufre daño por estar " + estado + " (-" + danyoEstado + " PS).\n";
         }
         return "";
     }
@@ -78,11 +79,8 @@ public abstract class Pokemon implements Comparable<Pokemon> {
         if (this.vidaActual < 0) this.vidaActual = 0;
     }
 
-    public boolean estaVivo() {
-        return this.vidaActual > 0;
-    }
-
-    // Sobreescritura de los métodos.
+    public boolean estaVivo() { return this.vidaActual > 0; }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -92,48 +90,21 @@ public abstract class Pokemon implements Comparable<Pokemon> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(nPokedex);
-    }
+    public int hashCode() { return Objects.hash(nPokedex); }
 
     @Override
-    public int compareTo(Pokemon otro) {
-        return Integer.compare(this.nPokedex, otro.nPokedex);
-    }
+    public int compareTo(Pokemon otro) { return Integer.compare(this.nPokedex, otro.nPokedex); }
 
     @Override
     public String toString() {
         return nombre + " (Lv." + nivel + ") [" + tipo + "] " + getBarraVidaVisual();
     }
 
-    // Getters y Setters.
-    public String getNombre() {
-        return nombre;
-    }
-
-    public int getVidaMaxima() {
-        return vidaMaxima;
-    }
-
-    public int getVidaActual() {
-        return vidaActual;
-    }
-
-    public Ataque[] getAtaques() {
-        return ataques;
-    }
-
-    public String getRutaSprite() {
-        return rutaSprite;
-    }
-
-    public EstadoAlterado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoAlterado estado) {
-        this.estado = estado;
-    }
-
-    
+    public String getNombre() { return nombre; }
+    public int getVidaMaxima() { return vidaMaxima; }
+    public int getVidaActual() { return vidaActual; }
+    public Ataque[] getAtaques() { return ataques; }
+    public String getRutaSprite() { return rutaSprite; }
+    public EstadoAlterado getEstado() { return estado; }
+    public void setEstado(EstadoAlterado estado) { this.estado = estado; }
 }

@@ -13,16 +13,16 @@ public class PokemonPlanta extends Pokemon {
     public String atacar(Pokemon rival, Ataque atq) {
         int danyo = atq.getPoder() > 0 ? atq.getPoder() + this.statAtaque : 0;
         StringBuilder log = new StringBuilder(this.nombre + " usa " + atq.getNombre() + "!\n");
-
+        
         if (atq.getPoder() > 0) {
             if (atq.getTipo() == TipoPokemon.PLANTA && rival.tipo == TipoPokemon.AGUA) {
-                danyo *= 2; log.append("Es súper eficaz!\n");
-            } else if ( atq.getTipo() == TipoPokemon.PLANTA && rival.tipo == TipoPokemon.FUEGO) {
-                danyo /= 2; log.append("No es muy eficaz..\n");
+                danyo *= 2; log.append("¡Es súper eficaz!\n");
+            } else if (atq.getTipo() == TipoPokemon.PLANTA && rival.tipo == TipoPokemon.FUEGO) {
+                danyo /= 2; log.append("No es muy eficaz...\n");
             }
             rival.recibirDanyo(danyo);
         }
-
+        
         if (atq.getEfectoSecundario() != EstadoAlterado.NINGUNO && rival.getEstado() == EstadoAlterado.NINGUNO) {
             if (new Random().nextInt(100) < atq.getProbabilidadEfecto()) {
                 rival.setEstado(atq.getEfectoSecundario());
@@ -31,5 +31,4 @@ public class PokemonPlanta extends Pokemon {
         }
         return log.toString();
     }
-    
 }

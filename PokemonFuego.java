@@ -1,5 +1,6 @@
 import java.util.Random;
 
+// Al heredar de Pokemon, ya se usa Serializable automáticamente.
 public class PokemonFuego extends Pokemon {
     public PokemonFuego(int nPokedex, String nombre, int nivel, int vidaMaxima, int ataque, int defensa, String sprite) {
         super(nPokedex, TipoPokemon.FUEGO, nombre, nivel, vidaMaxima, ataque, defensa, sprite);
@@ -13,16 +14,16 @@ public class PokemonFuego extends Pokemon {
     public String atacar(Pokemon rival, Ataque atq) {
         int danyo = atq.getPoder() > 0 ? atq.getPoder() + this.statAtaque : 0;
         StringBuilder log = new StringBuilder(this.nombre + " usa " + atq.getNombre() + "!\n");
-
+        
         if (atq.getPoder() > 0) {
             if (atq.getTipo() == TipoPokemon.FUEGO && rival.tipo == TipoPokemon.PLANTA) {
-                danyo *= 2; log.append("¡Es super efectivo!\n");
+                danyo *= 2; log.append("¡Es súper eficaz!\n");
             } else if (atq.getTipo() == TipoPokemon.FUEGO && rival.tipo == TipoPokemon.AGUA) {
-                danyo /= 2; log.append("No es muy eficaz..\n");
+                danyo /= 2; log.append("No es muy eficaz...\n");
             }
             rival.recibirDanyo(danyo);
         }
-
+        
         if (atq.getEfectoSecundario() != EstadoAlterado.NINGUNO && rival.getEstado() == EstadoAlterado.NINGUNO) {
             if (new Random().nextInt(100) < atq.getProbabilidadEfecto()) {
                 rival.setEstado(atq.getEfectoSecundario());

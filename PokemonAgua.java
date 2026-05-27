@@ -11,12 +11,12 @@ public class PokemonAgua extends Pokemon {
     public String atacar(Pokemon rival, Ataque atq) {
         int danyo = atq.getPoder() > 0 ? atq.getPoder() + this.statAtaque : 0;
         StringBuilder log = new StringBuilder(this.nombre + " usa " + atq.getNombre() + "!\n");
-
+        
         if (atq.getPoder() > 0) {
             if (atq.getTipo() == TipoPokemon.AGUA && rival.tipo == TipoPokemon.FUEGO) {
-                danyo *= 2; log.append("¡Es super efectivo!\n");
+                danyo *= 2; log.append("¡Es súper eficaz!\n");
             } else if (atq.getTipo() == TipoPokemon.AGUA && rival.tipo == TipoPokemon.PLANTA) {
-                danyo /= 2; log.append("No es muy eficaz..\n");
+                danyo /= 2; log.append("No es muy eficaz...\n");
             }
             rival.recibirDanyo(danyo);
         }
