@@ -8,17 +8,20 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
     protected String nombre;
     protected int nivel;
     protected int experiencia;
-    
+
     protected int vidaMaxima;
     protected int vidaActual;
     protected int statAtaque;
     protected int statDefensa;
-    
+
     protected Ataque[] ataques;
     protected EstadoAlterado estado;
     protected String rutaSprite;
 
-    public Pokemon(int nPokedex, TipoPokemon tipo, String nombre, int nivel, int vidaMaxima, int statAtaque, int statDefensa, String rutaSprite) {
+    protected int nivelEvolucion;
+    protected int idEvolucion;
+
+    public Pokemon (int nPokedex, TipoPokemon tipo, String nombre, int nivel, int vidaMaxima, int statAtaque, int statDefensa, String rutaSprite, int nivelEvolucion, int idEvolucion) {
         this.nPokedex = nPokedex;
         this.tipo = tipo;
         this.nombre = nombre;
@@ -31,6 +34,8 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
         this.ataques = new Ataque[4];
         this.estado = EstadoAlterado.NINGUNO;
         this.rutaSprite = rutaSprite;
+        this.nivelEvolucion = nivelEvolucion;
+        this.idEvolucion = idEvolucion;
     }
 
     public String getBarraVidaVisual() {
@@ -40,8 +45,8 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
         for (int i = 0; i < longitudBarra; i++) {
             barra.append(i < bloquesLlenos ? "█" : "░");
         }
-        barra.append("] ").append(vidaActual).append("/").append(vidaMaxima).append(" PS");
-        if (estado != EstadoAlterado.NINGUNO) barra.append(" [").append(estado).append("]");
+        barra.append("]").append(vidaActual).append("/").append(vidaMaxima).append(" PS");
+        if (estado != EstadoAlterado.NINGUNO) barra.append("[").append(estado).append("]");
         return barra.toString();
     }
 
@@ -52,15 +57,15 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
             this.experiencia -= 100;
             this.nivel++;
             this.vidaMaxima += 5;
-            this.vidaActual = vidaMaxima; 
+            this.vidaActual = vidaMaxima;
             this.statAtaque += 2;
             this.statDefensa += 2;
-            sb.append("¡").append(nombre).append(" subió al Nivel ").append(nivel).append("!\n");
+            sb.append("i").append(nombre).append(" subió al Nivel ").append(nivel).append("!\n");
         }
         return sb.toString();
     }
 
-    public String aplicarEfectosDeEstado() {
+    public String aplicarrEfectosDeEstado() {
         if (estado == EstadoAlterado.QUEMADO || estado == EstadoAlterado.ENVENENADO) {
             int danyoEstado = Math.max(1, vidaMaxima / 8);
             this.vidaActual -= danyoEstado;
@@ -71,7 +76,6 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
     }
 
     public abstract String atacar(Pokemon rival, Ataque ataqueUsado);
-
     public void recibirDanyo(int cantidad) {
         int danyoReal = cantidad - this.statDefensa;
         if (danyoReal <= 0) danyoReal = 1;
@@ -80,7 +84,7 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
     }
 
     public boolean estaVivo() { return this.vidaActual > 0; }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -100,6 +104,7 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
         return nombre + " (Lv." + nivel + ") [" + tipo + "] " + getBarraVidaVisual();
     }
 
+    // Getters
     public String getNombre() { return nombre; }
     public int getVidaMaxima() { return vidaMaxima; }
     public int getVidaActual() { return vidaActual; }
@@ -107,4 +112,9 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
     public String getRutaSprite() { return rutaSprite; }
     public EstadoAlterado getEstado() { return estado; }
     public void setEstado(EstadoAlterado estado) { this.estado = estado; }
+    public int getNivel() { return nivel; }
+    public int getNivelEvolucion() { return nivelEvolucion; }
+    public int getIdEvolucion() { return idEvolucion; }
+    public int getExperiencia() { return experiencia; }
+    public void setExperiencia(int exp) { this.experiencia = exp; }
 }

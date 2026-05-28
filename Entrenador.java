@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
-// Añadido Serializable.
 public class Entrenador implements Serializable {
     private String nombre;
     private ArrayList<Pokemon> equipo;

@@ -19,16 +19,11 @@ public class Combate {
 
             int accion = JOptionPane.showOptionDialog(null, info, "Turno", 
                 JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, iconP1, 
-                new Object[]{"Atacar", "Capturar"}, "Atacar");
+                new Object[]{"Atacar", "Huir"}, "Atacar");
 
             if (accion == 1) { 
-                if (intentarCaptura(rival, rnd)) {
-                    JOptionPane.showMessageDialog(null, "¡1... 2... 3... ¡Ya está!\n¡Has capturado a " + rival.getNombre() + "!");
-                    jugador.agregarPokemon(rival);
-                    return true; 
-                } else {
-                    JOptionPane.showMessageDialog(null, "¡Oh no! ¡El Pokémon se ha liberado!");
-                }
+                JOptionPane.showMessageDialog(null, "Has huido del combate de forma segura.");
+                return false;
             } else { 
                 Ataque[] atqs = p1.getAtaques();
                 String[] nombresAtq = { atqs[0].getNombre(), atqs[1].getNombre(), atqs[2].getNombre(), atqs[3].getNombre() };
@@ -46,13 +41,27 @@ public class Combate {
             String logRival = rival.atacar(p1, atqRival);
             JOptionPane.showMessageDialog(null, logRival, "Turno Rival", JOptionPane.WARNING_MESSAGE, iconRival);
             
-            String estados = p1.aplicarEfectosDeEstado() + rival.aplicarEfectosDeEstado();
+            String estados = p1.aplicarrEfectosDeEstado() + rival.aplicarrEfectosDeEstado();
             if (!estados.isEmpty()) JOptionPane.showMessageDialog(null, estados, "Daño por Estado", JOptionPane.ERROR_MESSAGE);
         }
 
         if (p1.estaVivo()) {
-            String logExp = p1.ganarExperiencia(60);
-            JOptionPane.showMessageDialog(null, "¡" + rival.getNombre() + " se debilitó!\n¡Has ganado!\n\n" + logExp);
+            String logExp = p1.ganarExperiencia(100); 
+            
+            int atrapar = JOptionPane.showConfirmDialog(null, "¡" + rival.getNombre() + " se ha debilitado!\n" + logExp + "\n¿Deseas lanzar una Pokéball para capturarlo?", "¡Victoria!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, iconP1);
+            
+            if (atrapar == JOptionPane.YES_OPTION) {
+                if (intentarCaptura(rival, rnd)) {
+                    rival.vidaActual = rival.vidaMaxima; // Lo curamos antes de meterlo al equipo
+                    if(jugador.agregarPokemon(rival)) {
+                        JOptionPane.showMessageDialog(null, "¡Has capturado a " + rival.getNombre() + "!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El Pokémon ha sido enviado al PC (Equipo Lleno).");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "¡Oh no! El Pokémon ha logrado escapar en el último momento.");
+                }
+            }
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "¡Tu Pokémon se ha debilitado!\nHas perdido...");
