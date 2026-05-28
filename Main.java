@@ -24,7 +24,7 @@ public class Main {
             String nombreTrainer = JOptionPane.showInputDialog("¿Cuál es tu nombre de Entrenador?");
             if(nombreTrainer == null || nombreTrainer.trim().isEmpty()) nombreTrainer = "Ash";
             jugador = new Entrenador(nombreTrainer);
-            jugador.agregarPokemon(new PokemonFuego(4, "Charmander", 5, 20, 12, 10, "charmander.png"));
+            jugador.agregarPokemon(new PokemonFuego(4, "Charmander", 5, 20, 12, 10, "charmander.jpg"));
         }
 
         boolean salir = false;
@@ -45,7 +45,7 @@ public class Main {
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, opcMod, opcMod[0]);
                     
                     if (mod == 0) {
-                        if(jugador.agregarPokemon(new PokemonPlanta(1, "Bulbasaur", 5, 25, 10, 12, "bulbasaur.png"))) {
+                        if(jugador.agregarPokemon(new PokemonPlanta(1, "Bulbasaur", 5, 25, 10, 12, "bulbasaur.jpg"))) {
                             JOptionPane.showMessageDialog(null, "¡Has recibido un Bulbasaur!");
                         } else {
                             JOptionPane.showMessageDialog(null, "¡Tu equipo está lleno!");
@@ -76,7 +76,7 @@ public class Main {
                     } else if (!jugador.getEquipo().get(0).estaVivo()) {
                         JOptionPane.showMessageDialog(null, "¡Tu primer Pokémon está debilitado! Cúralo en 'Modificar Equipo'.");
                     } else {
-                        PokemonAgua rival = new PokemonAgua(7, "Squirtle", 5, 22, 11, 14, "squirtle.png");
+                        PokemonAgua rival = new PokemonAgua(7, "Squirtle", 5, 22, 11, 14, "sqrt.jpg");
                         Combate.iniciar(jugador, rival);
                     }
                     break;
