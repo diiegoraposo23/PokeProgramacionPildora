@@ -65,7 +65,7 @@ public abstract class Pokemon implements Comparable<Pokemon>, Serializable {
         return sb.toString();
     }
 
-    public String aplicarrEfectosDeEstado() {
+    public String aplicarEfectosDeEstado() {
         if (estado == EstadoAlterado.QUEMADO || estado == EstadoAlterado.ENVENENADO) {
             int danyoEstado = Math.max(1, vidaMaxima / 8);
             this.vidaActual -= danyoEstado;

@@ -41,7 +41,7 @@ public class Combate {
             String logRival = rival.atacar(p1, atqRival);
             JOptionPane.showMessageDialog(null, logRival, "Turno Rival", JOptionPane.WARNING_MESSAGE, iconRival);
             
-            String estados = p1.aplicarrEfectosDeEstado() + rival.aplicarrEfectosDeEstado();
+            String estados = p1.aplicarEfectosDeEstado() + rival.aplicarEfectosDeEstado();
             if (!estados.isEmpty()) JOptionPane.showMessageDialog(null, estados, "Daño por Estado", JOptionPane.ERROR_MESSAGE);
         }
 

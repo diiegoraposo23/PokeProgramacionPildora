@@ -89,7 +89,7 @@ public class Main {
                         if (nivelAleatorio < 1) nivelAleatorio = 1;
                         
                         Pokemon rivalSalvaje = pokedex.generarPokemon(idAleatorio, nivelAleatorio);
-                        Combate.iniciar(jugador, rivalSalvaje);
+                        new InterfazCombate(jugador, rivalSalvaje);
                     }
                     break;
                     
