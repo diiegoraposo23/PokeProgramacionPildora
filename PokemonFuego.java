@@ -9,20 +9,32 @@ public class PokemonFuego extends Pokemon {
         ataques[3] = new Ataque("Pantalla Humo", 0, TipoPokemon.NORMAL, EstadoAlterado.NINGUNO, 0);
     }
 
-    @Override
+       @Override
     public String atacar(Pokemon rival, Ataque atq) {
-        int danyo = atq.getPoder() > 0 ? atq.getPoder() + this.statAtaque : 0;
+        int danyoBase = atq.getPoder() > 0 ? atq.getPoder() + this.statAtaque : 0;
         StringBuilder log = new StringBuilder(this.nombre + " usa " + atq.getNombre() + "!\n");
-        
+
         if (atq.getPoder() > 0) {
-            if (atq.getTipo() == TipoPokemon.FUEGO && rival.tipo == TipoPokemon.PLANTA) {
-                danyo *= 2; log.append("¡Es súper eficaz!\n");
-            } else if (atq.getTipo() == TipoPokemon.FUEGO && rival.tipo == TipoPokemon.AGUA) {
-                danyo /= 2; log.append("No es muy eficaz...\n");
+            // Consulta a la matriz usando el tipo de ataque y el tipo del rival.
+            double multiplicador = TablaEfectividad.obtenerMultiplicador(atq.getTipo(), rival.tipo);
+
+            // Calcula el daño final (danyoBase * 0.5, * 1.0, * 2.0 o * 0.0)
+            int danyoFinal = (int) (danyoBase * multiplicador);
+
+            // Escribe los mensajes según el multiplicador.
+            if (multiplicador > 1.0) {
+                log.append("¡Es súper efectivo!");
+            } else if (multiplicador < 1.0 && multiplicador > 0.0) {
+                log.append("No es muy eficaz.\n"); 
+            } else if (multiplicador == 0.0) {
+                log.append("No afecta a ").append(rival.getNombre()).append("...\n");
             }
-            rival.recibirDanyo(danyo);
+
+            // Aplica el daño.
+            rival.recibirDanyo(danyoFinal);
         }
-        
+
+        // Aplicar efectos secundarios si los hay.
         if (atq.getEfectoSecundario() != EstadoAlterado.NINGUNO && rival.getEstado() == EstadoAlterado.NINGUNO) {
             if (new Random().nextInt(100) < atq.getProbabilidadEfecto()) {
                 rival.setEstado(atq.getEfectoSecundario());
