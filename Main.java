@@ -78,18 +78,62 @@ public class Main {
                     break;
                     
                 case 2:
-                    if (jugador.getEquipo().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "¡No tienes Pokémon, no puedes luchar!");
-                    } else if (!jugador.getEquipo().get(0).estaVivo()) {
-                        JOptionPane.showMessageDialog(null, "¡Tu primer Pokémon está debilitado! Cúralo en 'Modificar Equipo'.");
-                    } else {
-                        // Combate contra uno de los 151 Pokémon al azar
-                        int idAleatorio = rnd.nextInt(pokedex.getTotalPokemon()) + 1;
-                        int nivelAleatorio = jugador.getEquipo().get(0).getNivel() + (rnd.nextInt(3) - 1); 
-                        if (nivelAleatorio < 1) nivelAleatorio = 1;
-                        
-                        Pokemon rivalSalvaje = pokedex.generarPokemon(idAleatorio, nivelAleatorio);
-                        new InterfazCombate(jugador, rivalSalvaje);
+                    boolean enZonaCombate = true;
+
+                    // El bucle mantiene al jugador en la "hierba alta"
+                    while (enZonaCombate) {
+
+                        // Comprobación antes de luchar.
+                        if (jugador.getEquipo().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "¡No tienes Pokémon, no puedes combatir!");
+                            break; // Te echa al menú principal.
+                        } else if (!jugador.getEquipo().get(0).estaVivo()) {
+                            JOptionPane.showMessageDialog(null, "Tu primer pokémon está debilitado.\nDebes curarlo antes de iniciar otro combate");
+                            // Aquí no hay break para que el menú post-combate de la opción de cerrar.
+                        } else {
+                            // Generar el rival y lanzar la ventana (el programa se pausa aquí)
+                            int idAleatorio = rnd.nextInt(pokedex.getTotalPokemon()) + 1;
+                            int nivelAleatorio = jugador.getEquipo().get(0).getNivel() + (rnd.nextInt(3) - 1);
+                            if (nivelAleatorio < 1) nivelAleatorio = 1;
+
+                            Pokemon rivalSalvaje = pokedex.generarPokemon(idAleatorio, nivelAleatorio);
+                            new InterfazCombate(jugador, rivalSalvaje);
+                        }
+
+                        // Menú post-combate.
+                        boolean decidiendo = true;
+                        while (decidiendo) {
+                            String[] opcionesPost = {"Seguir Combatiendo", "Curar Equipo", "Volver al menú"};
+                            int accionPost = JOptionPane.showOptionDialog(null,
+                                "El combate ha terminado. ¿Qué quieres hacer ahora?",
+                                "Post-Combate",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                opcionesPost,
+                                opcionesPost[0]);
+
+                            if (accionPost == 0) { // Seguir combatiendo.
+                                if (!jugador.getEquipo().get(0).estaVivo()) {
+                                    JOptionPane.showMessageDialog(null, "¡No puedes seguir! Cura primero a tu pokémon.");
+                                    // Al no cambiar 'decidiendo', el menú post-combate vuelve a salir.
+                                } else {
+                                    decidiendo = false; // Rompe el sub-bucle y vuelve arriba a generar otro combate.
+                                }
+
+                            } else if (accionPost == 1) {
+                                for(Pokemon p : jugador.getEquipo()) {
+                                    p.vidaActual = p.getVidaMaxima();
+                                    p.setEstado(EstadoAlterado.NINGUNO);
+                                }
+                                JOptionPane.showMessageDialog(null, "¡ Tus pokémon han descansado y están a tope de salud");
+                                // Sigue atrapado en el bucle 'decidiendo' por lo que vuelve a preguntar qué hacer.
+
+                            } else {
+                                decidiendo = false;
+                                enZonaCombate = false; // Rompe el bucle principal de combate.
+                            }
+                        }
                     }
                     break;
                     
