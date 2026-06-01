@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class InterfazCombate extends JFrame {
+public class InterfazCombate extends JDialog {
     private Entrenador jugador;
     private Pokemon pJugador;
     private Pokemon pRival;
@@ -37,7 +37,8 @@ public class InterfazCombate extends JFrame {
         this.setTitle("Simulador de Combate");
         this.setSize(600, 500);
         this.setLocationRelativeTo(null); // Centra en la pantalla.
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setModal(true); // Pausa el Main para que todo funcione correctamente.
         this.setLayout(new BorderLayout());
     }
 
