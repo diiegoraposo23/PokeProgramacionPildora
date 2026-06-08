@@ -1,3 +1,4 @@
+import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.JOptionPane;
 import java.util.Random;
 
@@ -54,24 +55,56 @@ public class Main {
                     break;
                     
                 case 1:
-                    String[] opcMod = {"Curar Equipo", "Liberar Pokémon"};
+                    String[] opcMod = {"Curar Equipo", "Cambiar Primer Pokémon", "Liberar Pokémon"};
                     int mod = JOptionPane.showOptionDialog(null, "Gestión de PC", "Modificar Equipo",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, opcMod, opcMod[0]);
-                    
+
                     if (mod == 0) {
                         for(Pokemon p : jugador.getEquipo()) {
-                            p.vidaActual = p.vidaMaxima;
+                            p.vidaActual = p.getVidaMaxima();
                             p.setEstado(EstadoAlterado.NINGUNO);
                         }
-                        JOptionPane.showMessageDialog(null, "Tus Pokémon han sido curados al máximo.");
+                        JOptionPane.showMessageDialog(null, "Tus Pokémon han sido curados.");
+
                     } else if (mod == 1) {
-                        String input = JOptionPane.showInputDialog(jugador.mostrarEquipo() + "\nIntroduce el número a liberar (1-6):");
+                        // Cambía de "líder"
+                        if (jugador.getEquipo().size() > 1) {
+                            String input = JOptionPane.showInputDialog(jugador.mostrarEquipo() + "\nIntroduce el numero del Pokémon que quieres que luche primero " + jugador.getEquipo().size() + "):");
+                            if (input != null) {
+                                try {
+                                    int index = Integer.parseInt(input) - 1;
+                                    if (index > 0 && index < jugador.getEquipo().size()) {
+                                        // Intercambia el pokémon elegido con el que está en la posicón 0.
+                                        Pokemon temp = jugador.getEquipo().get(0);
+                                        jugador.getEquipo().set(0, jugador.getEquipo().get(index));
+                                        jugador.getEquipo().set(index, temp);
+                                        JOptionPane.showMessageDialog(null, "i" + jugador.getEquipo().get(0).getNombre() + " es ahora tu Pokénon principal");
+                                    } else if (index == 0) {
+                                        JOptionPane.showMessageDialog(null, "Ese Pokémon ya es el líder");
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Número inválido.");
+                                    }
+                                } catch (Exception e) {
+                                    JOptionPane.showMessageDialog(null, "Introduce un número válido.");
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Solo tienes un Pokémon en el equipo.");
+                        }
+
+                    } else if (mod == 2) {
+                        String input = JOptionPane.showInputDialog(jugador.mostrarEquipo() + "\nIntroduce el número a liberar " + jugador.getEquipo().size() + ")");
                         if (input != null) {
                             try {
-                                jugador.liberarPokemon(Integer.parseInt(input) - 1);
-                                JOptionPane.showMessageDialog(null, "Pokémon liberado con éxito.");
+                                int index = Integer.parseInt(input) - 1;
+                                if (index >= 0 && index < jugador.getEquipo().size()) {
+                                    jugador.liberarPokemon(index);
+                                    JOptionPane.showMessageDialog(null, "Pokémon liberado con éxito.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Número inválido.");
+                                }
                             } catch (Exception e) {
-                                JOptionPane.showMessageDialog(null, "Número inválido.");
+                                JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido.");
                             }
                         }
                     }
